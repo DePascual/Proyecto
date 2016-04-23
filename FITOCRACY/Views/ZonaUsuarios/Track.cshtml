@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "Track";
+    Layout = "~/Views/Shared/_LayoutZonaUsu.cshtml";
+}
+
+<table style="width:100%; height:1000px" id="menuTrack">
+    <tr>
+        <td style="width:30%; height:100%; vertical-align:top">
+            <div class="container">
+                <div class="navbar" role="navigation">
+                    <div class="navbar-inner">
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav nav-pills nav-stacked" style="text-align:center">
+                                <li>
+                                    <div class="container center" style="width:100%">
+                                        @using (Html.BeginForm("Search", "ZonaUsuarios", FormMethod.Post))
+                                        {
+                                            <input type="text" class="form-control" placeholder="Search" name="busqueda" style="display:inline; position:relative; width:70%; float:left">
+                                            <button type="submit" class="button-login" style="float:right; position:relative; width:30%; height:100%">Search</button>
+                                        }
+                                    </div>
+                                </li>
+                                <li>
+                                    <div id="menuPreMadeWorkouts" style="text-decoration:underline; color:#0079ff"><h3>Pre-Made Workouts</h3></div>
+                                    <hr />
+                                    <div id="workouts" style="display:none">
+                                        @{
+                                            var listadoWorkouts = (List<FITOCRACY.Models.Workouts>)ViewData["listadoWorkouts"];
+                                            foreach (var workout in listadoWorkouts)
+                                            {
+                                                var nombreW = workout.Nombre;
+                                                var puntuacionW = workout.Puntos;
+                                                <div>
+                                                    <a id="workout'@nombreW" style="font-size:medium">@nombreW</a>
+                                                    <br />
+                                                    <small>@puntuacionW points</small>
+                                                </div>
+                                                <hr />
+                                            }
+                                        }
+                                    </div>
+                                </li>
+                                <li>
+                                    <div id="recentWorkouts" style="text-decoration:underline; color:#0079ff"><h3>Recent Workouts</h3></div>
+                                    <hr />
+                                    <div id="recent" style="display:none">
+                                        @{
+                                            var recentWorkouts = (List<FITOCRACY.Models.Workouts>)ViewData["recentWorkouts"];
+                                            if (recentWorkouts.Count() != 0)
+                                            {
+                                                foreach (var workout in recentWorkouts)
+                                                {
+                                                    var nombreW = workout.Nombre;
+                                                    <div>
+                                                        <p style="font-size:medium">@nombreW </p>
+                                                        <a id="workout'@nombreW">Do it Again!!</a>
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <div>
+                                                    <p style="font-size:medium">There aren't any Workout done!</p>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </li>
+                                <li>
+                                    <div id="allTracks" style="text-decoration:underline; color:#0079ff"><h3>All Workouts</h3></div>
+                                    <hr />
+                                    <div id="all" style="display:none; text-align:left">
+                                        @{
+                                            var allTracks = (List<FITOCRACY.Models.Tracks>)ViewData["listadoTracks"];
+                                            foreach (var track in allTracks)
+                                            {
+                                                var nombreT = track.Nombre;
+                                                <div>
+                                                    <p style="font-size:medium">@nombreT <a id="track'@track.Link"> Play it!!</a></p>
+
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td colspan="2" style="text-align:center; vertical-align:top; height:100%; width:70%" class="center">
+            <div id="vistaParcial">
+                @{
+                    if (Session["busqueda"] != null)
+                    {
+                        <h3 style="float:left; position:absolute">Search Results</h3><br /><br /><hr />
+                        List<FITOCRACY.Models.Tracks> resultadoBusqueda = (List<FITOCRACY.Models.Tracks>)Session["busqueda"];
+                        foreach (var busq in resultadoBusqueda)
+                        {
+                            <a id="track'@busq.Link" style="float:left">@busq.Nombre</a><br />
+                        }
+                    }
+                }
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script>
+    $('#menuPreMadeWorkouts').on('click', function (ev) {
+        var display = $('#workouts').css('display')
+        display == 'none' ? $('#workouts').css('display', 'block') : $('#workouts').css('display', 'none');
+        $('#recent').css('display', 'none');
+        $('#all').css('display', 'none');
+    });
+
+    $('#recentWorkouts').on('click', function (ev) {
+        var display = $('#recent').css('display')
+        display == 'none' ? $('#recent').css('display', 'block') : $('#recent').css('display', 'none');
+        $('#workouts').css('display', 'none');
+        $('#all').css('display', 'none');
+    });
+
+    $('#allTracks').on('click', function (ev) {
+        var display = $('#all').css('display')
+        display == 'none' ? $('#all').css('display', 'block') : $('#all').css('display', 'none');
+        $('#workouts').css('display', 'none');
+        $('#recent').css('display', 'none');
+    });
+
+
+    function extractIDtoUrl() {
+        return id = window.location.href.toString().split('/').pop();
+    }
+
+
+    $('a[id^="workout"]').on('click', function (ev) {
+        var act = $(this).attr('id').split("'")[1];
+        $('#vistaParcial').empty();
+
+        var ruta = "http://localhost:1398/ZonaUsuarios/Workout";
+        $('#vistaParcial').load(ruta, { "id": extractIDtoUrl(), "workout": act });
+    });
+
+    $('a[id^="track"]').on('click', function (ev) {
+        var act = $(this).attr('id').split("'")[1];
+        $('#vistaParcial').empty();
+
+        var ruta = "<iframe src=" + act + " allowfullscreen='' frameborder='0' style='height:500px; width:100%'></iframe>";
+        $('#vistaParcial').append(ruta);
+    });
+</script>

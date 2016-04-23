@@ -1,0 +1,225 @@
+﻿@model FITOCRACY.ViewModels.AboutUsuViewModel
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")" type="text/javascript"></script>
+
+<h2>About Me</h2>
+
+<a id="linkAboutMe">Edit Description...</a>
+
+<div id="aboutMe" style="display:none">
+    @using (Html.BeginForm("descripcion", "CustomUsu", new { @idUsu = ViewData["IdUsu"] }, FormMethod.Post))
+    {
+        <label>About you in 140 caracters...</label>
+        <br />
+        <textarea id="areaAboutYou" name="areaAboutYou" rows="3" cols="500" placeholder="I'm very happy person...bla bla bla'" maxlength="140"></textarea>
+        <button type="submit" class="btn btn-upload btn-lg btn-block">Submit</button>
+    }
+</div>
+
+<br />
+<a id="linkChangePass">Change my Password...</a>
+<div id="aboutPass" style="display:none">
+    @using (Html.BeginForm("changePass", "CustomUsu", new { @idUsu = ViewData["IdUsu"] }, FormMethod.Post))
+    {
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        @Html.AntiForgeryToken()
+
+        <div class="container input-group text-center">
+            <label style="float:left">Actual Password</label>
+            <br />
+            @Html.EditorFor(model => model.PasswordChange.actualPassword, new { htmlAttributes = new { @class = "form-control", @placeholder = "password*****", style = "width: 900px;" } })
+        </div>
+        <br />
+
+        <div class="container input-group text-center">
+            <label style="float:left">Password</label>
+            <br />
+            @Html.EditorFor(model => model.PasswordChange.password, new { htmlAttributes = new { @class = "form-control", @placeholder = "password*****", style = "width: 900px;" } })
+        </div>
+        <br />
+
+        <div class="container input-group text-center">
+            <label style="float:left">Revwite Password</label>
+            <br />
+            @Html.EditorFor(model => model.PasswordChange.confPassword, new { htmlAttributes = new { @class = "form-control", @placeholder = "Rewrite password*****", style = "width: 900px;" } })
+        </div>
+        <br />
+
+        <div class="container text-center">
+            <button type="submit" class="btn btn-primary btn-lg" style="width:300px;">Change my Password!!</button>
+        </div>
+    }
+</div>
+
+<br />
+<a id="linkBirthday">Change my Birthday...</a>
+<div id="aboutBirthday" style="display:none">
+    @using (Html.BeginForm("changeBirth", "CustomUsu", new { @idUsu = ViewData["IdUsu"] }, FormMethod.Post))
+    {
+        @Html.ValidationSummary(false, "", new { @class = "text-danger", @id = "sumary" })
+        @Html.AntiForgeryToken()
+        <table>
+            <tr>
+                <td>
+                    <div class="container input-group text-center">
+                        <div id="dropDias" class="btn-group">
+                            @Html.EditorFor(model => model.UsuarioBirthday.day, new { htmlAttributes = new { @id = "dayHidden", @class = "form -control", @type = "hidden" } })
+                            <div id="btnDias" class="btn btn-default dropdown dropdown-toggle" data-toggle="dropdown">
+                                Day
+                                <span class="caret"></span>
+                            </div>
+                            <ul id="listDias" class="dropdown-menu" role="menu" style="text-align:left">
+                                @{
+                                    for (int i = 1; i < 31; i++)
+                                    {
+                                        <li><a value='@i'>@i </a></li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <script>
+
+                        $('#dropDias').on('click', function () {
+                            $('#btnDias').dropdown('toggle');
+                        });
+
+                        $('.dropdown-menu li a').on('click', function () {
+                            $(this).parents(".btn-group").find('.btn').html($(this).text() + " <span class=\"caret\"></span>");
+                            $('#dayHidden').val($('#btnDias').text());
+                        })
+                    </script>
+                </td>
+                <td>
+                    <div class="container input-group text-center">
+                        <div id="dropMeses" class="btn-group">
+                            @Html.EditorFor(model => model.UsuarioBirthday.month, new { htmlAttributes = new { @id = "monthHidden", @class = "form -control", @type = "hidden" } })
+                            <div id="btnMes" class="btn btn-default dropdown dropdown-toggle" data-toggle="dropdown">
+                                Month
+                                <span class="caret"></span>
+                            </div>
+                            <ul id="listMeses" class="dropdown-menu" role="menu" style="text-align:left">
+                                <li><a value="01">01 - January</a></li>
+                                <li><a value="02">02 - February</a></li>
+                                <li><a value="03">03 - March</a></li>
+                                <li><a value="05">05 - May</a></li>
+                                <li><a value="06">06 - June</a></li>
+                                <li><a value="07">07 - July</a></li>
+                                <li><a value="08">08 - August</a></li>
+                                <li><a tvalue="09">09 - September</a></li>
+                                <li><a value="10">10 - October</a></li>
+                                <li><a value="11">11 - November</a></li>
+                                <li><a value="12">12 - December</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <script>
+
+                        $('#dropMeses').on('click', function () {
+                            $('#btnMes').dropdown('toggle');
+                        });
+
+                        $('.dropdown-menu li a').on('click', function () {
+                            $(this).parents(".btn-group").find('.btn').html($(this).text() + " <span class=\"caret\"></span>");
+                            $('#monthHidden').val($('#btnMes').text());
+                        })
+                    </script>
+                </td>
+                <td>
+                    <div class="container input-group text-center">
+                        <div id="dropYear" class="btn-group">
+                            @Html.EditorFor(model => model.UsuarioBirthday.year, new { htmlAttributes = new { @id = "yearHidden", @class = "form -control", @type = "hidden" } })
+                            <div id="btnYear" class="btn btn-default dropdown dropdown-toggle" data-toggle="dropdown">
+                                Year
+                                <span class="caret"></span>
+                            </div>
+                            <ul id="listYears" class="dropdown-menu" role="menu" style="text-align:left">
+                                @{
+                                    DateTime moment = DateTime.Now;
+                                    int yearAct = moment.Year;
+                                    int yearMin = yearAct - 18;
+                                    int yearMax = yearMin - 50;
+
+                                    for (int i = yearMin; i > yearMax; i--)
+                                    {
+                                        <li><a value='@i'>@i </a></li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <script>
+                        $('#dropYear').on('click', function () {
+                            $('#btnYear').dropdown('toggle');
+                        });
+
+                        $('.dropdown-menu li a').on('click', function () {
+                            $(this).parents(".btn-group").find('.btn').html($(this).text() + " <span class=\"caret\"></span>");
+                            $('#yearHidden').val($('#btnYear').text());
+                        })
+                    </script>
+                </td>
+            </tr>
+        </table>
+
+        <div class="container text-center">
+            <button id="btnEnviar" type="submit" class="btn btn-primary btn-lg" style="width:300px;">Change my Birthday!!</button>
+        </div>
+        <script>
+            $('#btnEnviar').on('click', function () {
+                var dia = $('#dayHidden').val();
+                var mes = $('#monthHidden').val();
+                var anyo = $('#yearHidden').val();
+
+                if (dia == "") {
+                    $('#sumary').append('<li style="margin-left:40px;">Day Required</li>')
+                }
+
+                if (mes == "") {
+                    $('#sumary').append('<li style="margin-left:40px;">Month Required</li>')
+                }
+
+                if (anyo == "") {
+                    $('#sumary').append('<li style="margin-left:40px;">Year Required</li>')
+                }
+            });
+        </script>
+                                    }
+</div>
+
+
+
+<script>
+    $('#linkAboutMe').on('click', function () {
+        if ($(this).text() == 'Edit Description...') {
+            $('#aboutMe').css('display', 'block');
+            $(this).text('Hide box...');
+        } else {
+            $('#aboutMe').css('display', 'none');
+            $(this).text('Edit Description...');
+        }
+    });
+
+    $('#linkChangePass').on('click', function () {
+        if ($(this).text() == 'Change my Password...') {
+            $('#aboutPass').css('display', 'block');
+            $(this).text('Hide box...');
+        } else {
+            $('#aboutPass').css('display', 'none');
+            $(this).text('Change my Password...');
+        }
+    });
+
+    $('#linkBirthday').on('click', function () {
+        if ($(this).text() == 'Change my Birthday...') {
+            $('#aboutBirthday').css('display', 'block');
+            $(this).text('Hide box...');
+        } else {
+            $('#aboutBirthday').css('display', 'none');
+            $(this).text('Change my Birthday...');
+        }
+    });
+</script>

@@ -1,0 +1,174 @@
+﻿@model FITOCRACY.ViewModels.UsuariosViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title FITOCRACY</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />*@
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <style>
+        .footer {
+            position: relative;
+            margin-top: -150px; 
+            height: 150px;
+            clear: both;
+            padding-top: 20px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="navbar navbar-default" role="navigation">
+            <div class="navbar-inner">
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        @{
+                            FITOCRACY.Models.Usuarios usu = (FITOCRACY.Models.Usuarios)Session["usuario"];
+                        }
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>
+                            <a href=@Url.Action("You", "ZonaUsuarios", new { id = ViewBag.idUsu })>You</a>
+                        </li>
+                        <li>
+                            <a href=@Url.Action("Track", "ZonaUsuarios", new { id = ViewBag.idUsu })>Track</a>
+                        </li>
+                        <li>
+                            <a href=@Url.Action("InicioCoach", "Coach", new { id = ViewBag.idUsu })>Coaching</a>
+                        </li>
+                        <li>
+                            <a href=@Url.Action("Connect", "ZonaUsuarios", new { id = ViewBag.idUsu })>Connect</a>
+                        </li>
+                        <li>
+                            <a href=@Url.Action("Leaders", "ZonaUsuarios", new { id = usu.Id_Usuario })>Leaders</a>
+                        </li>
+
+                        <li class="dropdown" id="dropUsu">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color:#0079ff; font-weight:bold">@usu.Username <span class="caret"></span></a>
+                            <ul class="dropdown-menu" id="listUsu">
+                                <li><a value="signOut" href="@Url.Action("SignOut", "ZonaUsuarios", new { id = usu.Id_Usuario })">Sign Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <script>
+                        $('#dropUsu').on('click', function () {
+                            $('#dropUsu').addClass('open');
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="cabecera" style="position:relative; z-index:1">
+        <div class="container">
+            <div class="navbar navbar-default">
+                <div class="navbar-header">
+                    <h1>FITOCRACY</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("#buttonYOU").on("click", function () {
+            $(window).attr('location', 'http://localhost:1398/ZonaUsuarios/YOU')
+        });
+    </script>
+
+
+    <div class="container body-content">
+        @RenderBody()
+
+        @if (IsSectionDefined("miJavaScript"))
+        {
+            @RenderSection("miJavaScript");
+        }
+        <hr />
+
+        <table style="width:100%" id="menuZonaUsu">
+            <tr style="background-color:#1F2B32; color:#FFF; text-align:center" height="80px">
+                <td>
+                    <h2>@Model.usuarioBD.Level.ToString()</h2>
+                    <small>Level</small>
+                </td>
+                <td>
+                    <h2>@Model.usuarioBD.Points.ToString()</h2>
+                    <small>Total Points</small>
+                </td>
+                <td>
+                    @{
+                        if (Model.usuarioBD.Age == null)
+                        {
+                            <h2>?</h2>
+                        }
+                        else
+                        {
+                            <h2>@Model.usuarioBD.Age.ToString()</h2>
+                        }
+                    }
+                    <small>Age</small>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:30%; vertical-align:top" >
+                    <div class="container">
+                        <div class="navbar navbar-default" role="navigation">
+                            <div class="navbar-inner">
+                                <div class="navbar-collapse collapse">
+                                    <ul class="nav nav-pills nav-stacked" style="text-align:center">
+                                        <li>
+                                            <a id="menuAbout">About You</a>
+                                        </li>
+                                        <li>
+                                            <a id="menuActivities">Activities</a>
+                                        </li>
+                                        <li>
+                                            <a id="menuLevels">Levels</a>
+                                        </li>
+ 
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2" style="text-align:center; vertical-align:top; height:700px; width:70%" class="center">
+                    <div id="vistaParcial"></div>
+                </td>
+            </tr>
+        </table>
+
+        <script>
+            function extractIDtoUrl() {
+                return id = window.location.href.toString().split('/').pop();
+            }
+
+            $('#vistaParcial').load("http://localhost:1398/CustomUsu/About", { "id": extractIDtoUrl() });
+
+            $('a[id^="menu"]').on('click', function (ev) {
+                var act = ev.target.id.replace("menu", "");
+                $('#vistaParcial').empty();
+
+                var ruta = "http://localhost:1398/CustomUsu/" + act;
+                $('#vistaParcial').load(ruta, { "id": extractIDtoUrl() });
+            })
+        </script>     
+    </div>
+    <hr />
+    <footer>
+        <p style="float:right; margin-right:10%">&copy; @DateTime.Now.Year - FITOCRACY</p>
+    </footer>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>
+

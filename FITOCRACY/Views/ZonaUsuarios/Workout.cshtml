@@ -1,0 +1,86 @@
+﻿<h3 style="color:#0079ff" class="center">@ViewData["workout"]</h3>
+<table id="tablaWorkout" class="table table-striped center" style="text-align:center; width:100%; height:100%">
+    <tr>
+        <th style="text-align:center">
+            Work
+        </th>
+        <th style="text-align:center">
+            Sets
+        </th>
+        <th style="text-align:center">
+            Repetitions
+        </th>
+    </tr>
+    @{
+        var listadoTracks = (List<FITOCRACY.Models.Tracks>)ViewData["listadoTracks"];
+        foreach (var track in listadoTracks)
+        {
+            <tr>
+                <td>
+                    <p style="color:#1F2B32; font-size:medium;">@track.Nombre</p>
+                </td>
+                <td>
+                    <p style="font-size:medium;">@track.Series</p>
+                </td>
+                <td>
+                    <p style="font-size:medium;">@track.Repeticiones</p>
+                </td>
+            </tr>
+        }
+    }
+    <tr>
+        <td colspan="3" style="text-align:center">
+            <button id="buttonStart" class="btn btn-primary btn-lg center" style="width:300px">Let's gooo!!!</button>
+        </td>
+    </tr>
+</table>
+
+<div id="carruselVideo" class="container-fluid" style="display:none; height:100%">
+    <div class="row-fluid">
+        <div class="carousel slide" id="myCarousel" data-interval="false">
+            <div class="carousel-inner">
+                @{
+                    for (int i = 0; i < listadoTracks.Count(); i++)
+                    {
+                        if (i == 0)
+                        {
+                            <div class="item active">
+                                <div class="container">
+                                    <iframe src=@listadoTracks[i].Link allowfullscreen="" frameborder="0" style="height:500px; width:100%"></iframe>
+                                </div>
+                                <div style="background-color:#000000; opacity:.5; width:800px">
+                                    <p style="font-size:large; color:#fff">@listadoTracks[i].Nombre  @listadoTracks[i].Series sets  @listadoTracks[i].Repeticiones repetitions </p>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="item">
+                                <div class="container">
+                                    <iframe src=@listadoTracks[i].Link allowfullscreen="" frameborder="0" style="height:500px; width:100%"></iframe>
+                                </div>
+                                <div style="background-color:#000000; opacity:.5; width:800px">
+                                    <p style="font-size:large; color:#fff">@listadoTracks[i].Nombre  @listadoTracks[i].Series sets  @listadoTracks[i].Repeticiones repetitions </p>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+            <a data-slide="prev" href="#myCarousel" class="left carousel-control">‹</a>
+            <a data-slide="next" href="#myCarousel" class="right carousel-control">›</a>
+        </div>
+    </div>
+    @using (Html.BeginForm("workoutDone", "ZonaUsuarios", new { @idUsu = ViewData["IdUsu"], @work=ViewData["workout"] }, FormMethod.Post))
+    {
+        <button id="buttonDone" class="btn btn-primary btn-lg center" style="width:300px">Workout Done!!!</button>
+    }
+</div>
+
+
+<script>
+    $('#buttonStart').on('click', function (ev) {
+        $('#tablaWorkout').css('display', 'none');
+        $('#carruselVideo').css('display', 'block');
+    });
+</script>

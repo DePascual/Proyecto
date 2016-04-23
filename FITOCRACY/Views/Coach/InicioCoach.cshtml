@@ -1,0 +1,295 @@
+﻿
+@{
+    ViewBag.Title = "InicioCoach";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<div class="center" style="width:90%; background-color:#293440">
+    <a href="#howItWorks" style="text-decoration:none; color:#fff; font-size:medium; margin-right:3%">How it Works</a>
+    <a href="#pickACoach" style="text-decoration:none; color:#fff; font-size:medium; margin-right:3%">Pick a Coach</a>
+    <a href="#viewCoaches" style="text-decoration:none; color:#fff; font-size:medium; margin-right:3%">View All Coaches</a>
+</div>
+<div class="center" style="position:relative; background:url(../../Content/Imagenes/portada.jpg); width:90%; height:480px; opacity:.85">
+    <div id="textoImg" style="position:relative; top:25%">
+        <h1 style="text-align:center; color:#F7F7F3">Get in the Best Shape of Your Life</h1>
+        <h3 style="color:#A5DCF1; text-align:center">
+            Fitocracy gives you a private coach to help you reach any fitness goal.
+            All for an incredibly affordable price.
+        </h3>
+        <button id="buttonRecomendacion" class="btn btn-primary btn-lg center" style="width:300px; position:relative; left:35%">Get a Recomendation</button>
+        @{
+            FITOCRACY.Models.Usuarios usu = (FITOCRACY.Models.Usuarios)Session["usuario"];
+        }
+        <script>
+            $("#buttonRecomendacion").on("click", function () {
+                $(window).attr('location', 'http://localhost:1398/ZonaUsuarios/Connect')
+            });
+        </script>
+    </div>
+</div>
+
+<hr />
+
+<a id="howItWorks"></a>
+<img src="~/Content/Imagenes/portadaServicios.PNG" class="center" />
+<hr />
+
+<a id="pickACoach"></a>
+@{
+    var listadoEntrenadores = (List<FITOCRACY.Models.Entrenadores>)ViewData["listadoEntrenadores"];
+
+    var listadoWeightLoss = (List<FITOCRACY.Models.Entrenamientos>)ViewData["listadoWeightLoss"];
+
+    var listadoMuscleGain = (List<FITOCRACY.Models.Entrenamientos>)ViewData["listadoBodyWeight"];
+
+    var listadoOne = (List<FITOCRACY.Models.Entrenamientos>)ViewData["listadoOne"];
+}
+<div class="center" style="width:100%; background-color:#EFF1F3">
+    <table style="width:100%; text-align:center">
+        <tr>
+            <td>
+                <h2>Coaches for Weight Loss</h2>
+            </td>
+        </tr>
+        <tr style="height:550px; vertical-align:top">
+            <td>
+                @foreach (var wl in listadoWeightLoss)
+                {
+                    foreach (var ent in listadoEntrenadores)
+                    {
+                        if (listadoWeightLoss.IndexOf(wl) <= 2)
+                        {
+                            if (wl.Id_Entrenador == ent.Id_Entrenador)
+                            {
+                                ViewData["entrenadorActual"] = ent;
+                                <div style="display:inline-block">
+                                    @Html.Partial("Entrenamiento", wl)
+                                </div>
+                            }
+                        }
+                    }
+                }
+            </td>
+        </tr>
+    </table>
+    <table style="width:100%; text-align:center">
+        <tr>
+            <td>
+                <h2>Coaches for Muscle Gain</h2>
+            </td>
+        </tr>
+        <tr style="height:550px; vertical-align:top;">
+            <td>
+
+                @foreach (var mg in listadoMuscleGain)
+            {
+                foreach (var ent in listadoEntrenadores)
+                {
+                    if (listadoMuscleGain.IndexOf(mg) <= 2)
+                    {
+                        if (mg.Id_Entrenador == ent.Id_Entrenador)
+                        {
+                            ViewData["entrenadorActual"] = ent;
+                                <div style="display:inline-block">
+                                    @Html.Partial("Entrenamiento", mg)
+                                </div>
+                            }
+                        }
+                    }
+                }
+            </td>
+        </tr>
+    </table>
+    <table style="width:100%; text-align:center">
+        <tr>
+            <td>
+                <h2>One on One Coaching</h2>
+            </td>
+        </tr>
+        <tr style="height:550px; vertical-align:top; margin-top:-1px">
+            <td style="vertical-align:top">
+                @foreach (var one in listadoOne)
+                 {
+                foreach (var ent in listadoEntrenadores)
+                {
+                    if (listadoOne.IndexOf(one) <= 2)
+                    {
+                        if (one.Id_Entrenador == ent.Id_Entrenador)
+                        {
+                            ViewData["entrenadorActual"] = ent;
+                                <div style="display:inline-block">
+                                    @Html.Partial("Entrenamiento", one)
+                                </div>
+                            }
+                        }
+                    }
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<a id="viewCoaches"></a>
+<div id="botonesOcultos" style="display:none">
+    @using (Html.BeginForm("CargaEntrenamientos", "Coach", FormMethod.Post))
+    {
+        <input type="submit" value="Carga entrenamiento" class="btn btn-default btn-block center" />
+    }
+
+    @using (Html.BeginForm("CargaCoach", "Coach", FormMethod.Post))
+    {
+        <input type="submit" value="Carga Coach" class="btn btn-upload btn-block center" />
+    }
+</div>
+
+
+
+
+
+<div class="container" style="background:#293440; color:#fff">
+    <h2 style="text-align:center">Meet the Coaches</h2>
+    <div id="carouselCoaches" class="carousel slide" data-ride="carousel">
+
+        <ol class="carousel-indicators">
+            <li data-target="#carouselCoaches" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselCoaches" data-slide-to="1"></li>
+            <li data-target="#carouselCoaches" data-slide-to="2"></li>
+        </ol>
+
+
+        <div class="carousel-inner">
+            <div class="item active">
+                <table>
+                    <tr>
+                        <td style="width:300px; height:300px; padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <img src='@Url.Action( "showEntrenador", "Image", new { id = listadoEntrenadores[0].Id_Entrenador })' height="300" width="300" />
+                            </div>
+                        </td>
+                        <td style="width:300px; height:300px; padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <img src='@Url.Action( "showEntrenador", "Image", new { id = listadoEntrenadores[1].Id_Entrenador })' height="300" width="300" />
+                            </div>
+                        </td>
+                        <td style="width:300px; height:300px; padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <img src='@Url.Action( "showEntrenador", "Image", new { id = listadoEntrenadores[2].Id_Entrenador })' height="300" width="300" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <h3>@listadoEntrenadores[0].Nombre @listadoEntrenadores[0].Apellidos</h3>
+                                <p>@listadoEntrenadores[0].Descripcion</p>
+                            </div>
+                        </td>
+                        <td style="padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <h3>@listadoEntrenadores[1].Nombre @listadoEntrenadores[1].Apellidos</h3>
+                                <p>@listadoEntrenadores[1].Descripcion</p>
+                            </div>
+                        </td>
+                        <td style="padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <h3>@listadoEntrenadores[2].Nombre @listadoEntrenadores[2].Apellidos</h3>
+                                <p>@listadoEntrenadores[2].Descripcion</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="item">
+                <table>
+                    <tr>
+                        <td style="width:300px; height:300px; padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <img src='@Url.Action("showEntrenador", "Image", new { id = listadoEntrenadores[3].Id_Entrenador })' height="300" width="300" />
+                            </div>
+                        </td>
+                        <td style="width:300px; height:300px; padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <img src='@Url.Action("showEntrenador", "Image", new { id = listadoEntrenadores[4].Id_Entrenador })' height="300" width="300" />
+                            </div>
+                        </td>
+                        <td style="width:300px; height:300px; padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <img src='@Url.Action( "showEntrenador", "Image", new { id = listadoEntrenadores[5].Id_Entrenador })' height="300" width="300" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <h3>@listadoEntrenadores[3].Nombre @listadoEntrenadores[3].Apellidos</h3>
+                                <p>@listadoEntrenadores[3].Descripcion</p>
+                            </div>
+                        </td>
+                        <td style="padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <h3>@listadoEntrenadores[4].Nombre @listadoEntrenadores[4].Apellidos</h3>
+                                <p>@listadoEntrenadores[4].Descripcion</p>
+                            </div>
+                        </td>
+                        <td style="padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <h3>@listadoEntrenadores[5].Nombre @listadoEntrenadores[5].Apellidos</h3>
+                                <p>@listadoEntrenadores[5].Descripcion</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="item">
+                <table>
+                    <tr>
+                        <td style="width:300px; height:300px; padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <img src='@Url.Action("showEntrenador", "Image", new { id = listadoEntrenadores[6].Id_Entrenador })' height="300" width="300" />
+                            </div>
+                        </td>
+                        <td style="width:300px; height:300px; padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <img src='@Url.Action( "showEntrenador", "Image", new { id = listadoEntrenadores[7].Id_Entrenador })' height="300" width="300" />
+                            </div>
+                        </td>
+                        <td style="width:300px; height:300px; padding:30px 20px 10px 20px"></td>
+                    </tr>
+                    <tr>
+                        <td style="padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <h3>@listadoEntrenadores[6].Nombre @listadoEntrenadores[6].Apellidos</h3>
+                                <p>@listadoEntrenadores[6].Descripcion</p>
+                            </div>
+                        </td>
+                        <td style="padding:30px 20px 10px 20px">
+                            <div class="center">
+                                <h3>@listadoEntrenadores[7].Nombre @listadoEntrenadores[7].Apellidos</h3>
+                                <p>@listadoEntrenadores[7].Descripcion</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carouselCoaches" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#carouselCoaches" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    </div>
+</div>
+
+<script>
+    $("button[id*='Login']").on("click", function () {
+        $(window).attr('location', 'http://localhost:1398/Home/Login')
+    });
+</script>

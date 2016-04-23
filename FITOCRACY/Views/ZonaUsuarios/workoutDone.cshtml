@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "workoutDone";
+    Layout = "~/Views/Shared/_LayoutZonaUsu.cshtml";
+}
+
+@{
+    var usuario = (FITOCRACY.Models.Usuarios)ViewData["usuario"];
+}
+
+<div class="container center" style="text-align:center">
+    <h2 style="color:#0079ff">CONGRATULATIONS @usuario.Username</h2>
+    <p>You have completed the Workout!!</p>
+    <p>You have <strong style="color:#0079ff; font-size:medium">@usuario.Points</strong> and your level is <strong style="color:#0079ff; font-size:medium">@usuario.Level</strong></p>
+
+    <h3 style="color:#0079ff">GOOD WORK!!!</h3>
+
+    <button id="buttonContinue" class="btn btn-primary btn-lg" style="width:300px;">Continues to enjoy</button>
+    <button id="buttonCoaching" class="btn btn-primary btn-lg" style="width:300px;">Hire a Coach</button>
+</div>
+<script>
+    $("#buttonCoaching").on("click", function () {
+        $(window).attr('location', 'http://localhost:1398/Coach/InicioCoach/' + @usuario.Id_Usuario);
+    });
+    $("#buttonContinue").on("click", function () {
+        $(window).attr('location', 'http://localhost:1398/ZonaUsuarios/Track/'+ @usuario.Id_Usuario);
+    });
+</script>
+

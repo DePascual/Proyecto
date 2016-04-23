@@ -1,0 +1,94 @@
+﻿@model FITOCRACY.ViewModels.UsuariosViewModel
+@using System.Web.Mvc.Html;
+
+@{
+    ViewBag.Title = "Inicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/bootstrap.min.js")" type="text/javascript"></script>
+
+<div class="center"; style="position:relative; background:url(../../Content/Imagenes/portada.jpg); width:90%; height:480px">
+    <div id="textoImg" style=" float:right">
+        <h2 style="text-align:center; color:#FFF">2016 is Your Year</h2>
+        <p style="color:#8A9599; text-align:center">Fit fitness into your life this year. Track your <br /> develop healthy habits, and reach your <br />goals with the help of our expert coaches.</p>
+        <button id="buttonLogin" class="btn btn-primary btn-lg center" style="width:300px; float:right">Join Today</button>
+    </div>
+</div>
+
+<hr />
+<img src="~/Content/Imagenes/portadaServicios.PNG" class="center"/>
+<hr />
+<div class="container">
+    <div class="portadaOferta">
+        <h3>How Much Does It Cost?</h3>
+        <p>PROFESSIONAL TRAINING FROM THE WORLD'S BEST COACHES STARTS FOR A LITTLES AS $1/DAY</p>
+        <table style="width:100%">
+            <tr style="text-align:center">
+                <td style="background-color:#EFF1F3; width:50%">
+                    <p style="font-size:40px">Free</p>
+                    <small>No Strings</small>
+                    <p style="color:#0079ff; font-size:60px"><span><sup>$</sup>0</span></p>
+                    <ul style="text-align:left; font-size:18px">
+                        <li>Get free workouts for any goal and experience level</li>
+                        <li>Earn points for every workout logged</li>
+                        <li>Earn badges for unlocking special achievements</li>
+                        <li>View progress on any exercise with interactive charts</li>
+                        <li>Get support and motivation from the most positive fitness community online</li>
+                        <li>Read daily articles and tips from our Knowledge Center</li>
+                    </ul>
+                    <hr />
+                   
+                </td>
+                <td style="background-color:white; width:50%">
+                    <p style="font-size:40px">Coaching</p>
+                    <small>Starting From</small>
+                    <p style="color:#0079ff; font-size:60px"><span><sup>$</sup>1</span></p>
+                    <ul style="text-align:left; font-size:18px">
+                        <li>Get everything included in Fitocracy and...</li>
+                        <li>Select a coach who can help you reach your goals</li>
+                        <li>Get a customized nutrition plan built for you</li>
+                        <li>Follow workouts made specifically for you</li>
+                        <li>Receive daily accountability and personalized guidance from your coach to make sure you're on track</li>
+                        <li>Get help from your coach any time you need it</li>
+                    </ul>
+                    <hr />
+                   
+                </td>               
+            </tr>
+            <tr style="text-align:center">
+                <td><button id="buttonLogin2" class="btn btn-primary btn-lg" style="width:300px;">Join Now</button></td>
+                <td><button id="buttonCoaching" class="btn btn-primary btn-lg" style="width:300px;">Hire a Coach</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+    
+    $("button[id*='Login']").on("click", function () {
+        $(window).attr('location', 'http://localhost:1398/Home/Login')
+    });
+
+    $("#buttonCoaching").on("click", function () {
+        $(window).attr('location', 'http://localhost:1398/Coach/InicioCoach')
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

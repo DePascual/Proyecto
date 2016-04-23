@@ -1,0 +1,26 @@
+﻿@model FITOCRACY.Models.Contact
+@{
+    ViewBag.Title = "Connect";
+    Layout = "~/Views/Shared/_LayoutZonaUsu.cshtml";
+}
+
+@{
+    FITOCRACY.Models.Usuarios usu = (FITOCRACY.Models.Usuarios)Session["usuario"];
+}
+
+<h3>Hey @usu.Username</h3>
+<p>Please tell us the following: your age, gender, fitness history, fitness goals, and what kind of equipment/gym access you have. We'll get back to you with our recommendation as quickly as we can.</p>
+<div class="row">
+    @using (Html.BeginForm("Message", "ZonaUsuarios", FormMethod.Post))
+    {
+        <div class="container input-group text-center">
+            <textarea id="areaMessage" name="areaMessage" rows="10" cols="150" placeholder="We're not around but we still want to hear from you!  Leave us a note:"></textarea>
+        </div>
+        <br />
+        <div class="container text-center">
+            <button type="submit" class="btn btn-primary btn-lg" style="width:300px;">Send</button>
+        </div>
+    }
+</div>
+
+
